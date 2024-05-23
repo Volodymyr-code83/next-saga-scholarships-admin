@@ -1,1 +1,1 @@
-{"version":1,"functions":{"/forms/form-elements":{},"/calendar":{},"/auth/signup":{},"/profile":{},"/tables":{},"/forms/form-layout":{},"/settings":{},"/auth/signin":{},"/ui/alerts":{},"/ui/buttons":{}}}
+{"version":1,"functions":{"/forms/form-layout":{},"/auth/signup":{},"/forms/form-elements":{},"/profile":{},"/tables":{},"/settings":{},"/ui/alerts":{},"/ui/buttons":{},"/calendar":{},"/auth/signin":{}}}
