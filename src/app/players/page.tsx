@@ -4,6 +4,7 @@ import PlayerDeleteModal from "@/components/players/PlayerDeleteModal";
 import PlayerEditModal from "@/components/players/PlayerEditModal";
 import { PlayerDataType } from "@/types";
 import { useState, ChangeEvent, useEffect } from "react";
+import TextEditModal from "../../components/about/TextEditModal";
 
 
 import firebaseConfig from "../../../firebaseConfig";
@@ -28,8 +29,10 @@ const Page = () => {
   const cookies = parseCookies(); // Read cookies using nookies
   const token = cookies.token;
   
+  const [isOpenedEditTextModal, setIsOpenedEditTextModal] = useState(false);
   const [searchText, setSearchText] = useState<string>("");
   const [players, setPlayers] = useState<PlayerDataType[]>([]);
+  const [playersTitle, setPlayersTitle] = useState<string>("");
   const [editPlayerData, setEditPlayerData] = useState<{
     player: PlayerDataType;
     index: number;
@@ -46,13 +49,14 @@ const Page = () => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         const userUid = user.uid;
-        const pageDataRef = ref(db, `adminData/${userUid}/players`);
+        const pageDataRef = ref(db, `adminData/${userUid}`);
         onValue(pageDataRef, (snapshot) => {
           try {
             const data = snapshot.val();
             if (data !== null) {
-              if (Array.isArray(data)) {
-                setPlayers(data);
+              if (Array.isArray(data.players)) {
+                setPlayers(data.players);
+                setPlayersTitle(data.playersTitle);
               } else {
                 console.error("Data is not in the expected format");
               }
@@ -74,6 +78,15 @@ const Page = () => {
       unsubscribe();
     };
   }, []);
+
+  const handleEditText = () => {
+    setIsOpenedEditTextModal(true);
+  };
+
+  const handleSubmitText = (text: string) => {
+    setPlayersTitle(text);
+    setIsOpenedEditTextModal(false);
+  };
 
 
   const handleAdd = () => {
@@ -101,6 +114,7 @@ const Page = () => {
     setEditPlayerData(null);
     setIsOpenedEditModal(false);
     setIsOpenedDeleteModal(false);
+    setIsOpenedEditTextModal(false);
   };
 
   const handleSubmit = (playerData: PlayerDataType) => {
@@ -141,6 +155,8 @@ const Page = () => {
       setSuccess(false);
 
       const userUid = user.uid;
+      const userRef1 = ref(db, `adminData/${userUid}/playersTitle`);
+      set(userRef1, playersTitle);
       const userRef = ref(db, `adminData/${userUid}/players`);
       set(userRef, players)
       .then(() => {
@@ -240,6 +256,29 @@ const Page = () => {
             placeholder="Search by name"
           />
         </div> */}
+        <div className="flex w-full flex-col items-start justify-start gap-[30px]">
+        <div className="ju  flex w-full items-start rounded-[10px] bg-white p-10 text-2xl text-textBlack">
+          {playersTitle}
+        </div>
+        <div className="flex w-full items-center justify-start gap-5">
+          <button
+            className=" rounded bg-blue px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-blue"
+            type="button"
+            onClick={() => handleEditText()}
+          >
+            Edit
+          </button>
+          <button
+            className=" rounded bg-red px-4 py-2 text-xs font-bold uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-red"
+            type="button"
+            onClick={() =>
+              setPlayersTitle("")
+            }
+          >
+            Delete
+          </button>
+        </div>
+      </div>
         <button
           className=" flex items-center justify-center gap-4 rounded-[10px] bg-blue px-4 py-2 text-xs uppercase text-white shadow outline-none transition-all duration-150 ease-linear hover:shadow-md focus:outline-none active:bg-blue"
           type="button"
@@ -286,6 +325,15 @@ const Page = () => {
           isOpen={isOpenedDeleteModal}
           onClose={handleClose}
           onSubmit={handleDelete}
+        />
+      )}
+
+      {isOpenedEditTextModal && (
+        <TextEditModal
+          isOpen={isOpenedEditTextModal}
+          onClose={handleClose}
+          text={playersTitle}
+          onSubmit={handleSubmitText}
         />
       )}
 
