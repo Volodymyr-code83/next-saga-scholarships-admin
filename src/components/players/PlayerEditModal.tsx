@@ -250,7 +250,7 @@ const PlayerEditModal = ({
                     className="min-w-[150px] text-right text-[20px] font-medium text-textBlack dark:text-white"
                     htmlFor="race"
                   >
-                    Race
+                    Major
                   </label>
                   <div className="flex w-full flex-col items-start justify-start gap-4">
                     <input

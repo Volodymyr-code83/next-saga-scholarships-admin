@@ -247,7 +247,7 @@ const AboutUs = () => {
               width={1510}
               height={516}
               alt=""
-              className="h-auto max-h-[516px]  w-full max-w-[1510px] rounded-[10px] bg-cover bg-center "
+              className="h-auto max-h-[516px]  w-auto rounded-[10px]  bg-cover bg-center "
             />
           )}
         </div>
@@ -334,7 +334,7 @@ const AboutUs = () => {
               width={1510}
               height={516}
               alt=""
-              className="h-auto max-h-[516px]  w-full max-w-[1510px] rounded-[10px] bg-cover bg-center "
+              className="h-auto max-h-[516px]  w-auto max-w-[1510px] bg-cover bg-center "
             />
           )}
         </div>

@@ -37,7 +37,7 @@ const PlayerCard = ({
             {`Sport: ${playerData?.sport}`}
           </p>
           <p className="line-clamp-1 text-[10px] leading-[10px] text-textBlack">
-            {`Race: ${playerData?.race}`}
+            {`Major: ${playerData?.race}`}
           </p>
           <p className="line-clamp-1 text-[10px] leading-[10px] text-textBlack">
             {`Country: ${playerData?.country}`}
